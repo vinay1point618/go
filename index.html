@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirecting...</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .loading-container {
+            text-align: center;
+        }
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid white;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        h2 {
+            margin: 0;
+            font-weight: 300;
+        }
+        p {
+            margin: 10px 0 0;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="loading-container">
+        <div class="spinner"></div>
+        <h2>Redirecting...</h2>
+        <p>Taking you to the best version for your device</p>
+    </div>
+
+    <script>
+        // Replace these URLs with your actual links
+        const DESKTOP_URL = "https://www.figma.com/proto/UALORiCGJ7CwcfyiQERC20/Personal-Branding?page-id=4%3A130&node-id=76-1106&p=f&viewport=1327%2C-459%2C0.14&t=MCqUsM3HxEP6TaLz-1&scaling=contain&content-scaling=responsive";  // Replace with Link A
+        const TABLET_URL = "https://www.figma.com/proto/UALORiCGJ7CwcfyiQERC20/Personal-Branding?page-id=4%3A130&node-id=76-1291&p=f&viewport=1327%2C-459%2C0.14&t=MCqUsM3HxEP6TaLz-1&scaling=contain&content-scaling=responsive";    // Replace with Link B
+        const MOBILE_URL = "https://https://www.figma.com/proto/UALORiCGJ7CwcfyiQERC20/Personal-Branding?page-id=4%3A130&node-id=76-1476&p=f&viewport=1327%2C-459%2C0.14&t=MCqUsM3HxEP6TaLz-1&scaling=contain&content-scaling=responsive";    // Replace with Link C
+
+        function detectDevice() {
+            const userAgent = navigator.userAgent.toLowerCase();
+            const screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+            
+            // Check for mobile devices first (most specific)
+            if (screenWidth <= 768 || 
+                /android|webos|iphone|ipod|blackberry|iemobile|opera mini/i.test(userAgent)) {
+                return 'mobile';
+            }
+            
+            // Check for tablets
+            if (screenWidth <= 1024 || 
+                /ipad|android(?!.*mobile)|tablet/i.test(userAgent)) {
+                return 'tablet';
+            }
+            
+            // Default to desktop
+            return 'desktop';
+        }
+
+        function redirectToDevice() {
+            const device = detectDevice();
+            let redirectUrl;
+            
+            switch(device) {
+                case 'mobile':
+                    redirectUrl = MOBILE_URL;
+                    break;
+                case 'tablet':
+                    redirectUrl = TABLET_URL;
+                    break;
+                case 'desktop':
+                default:
+                    redirectUrl = DESKTOP_URL;
+                    break;
+            }
+            
+            // Add a small delay for better user experience
+            setTimeout(() => {
+                window.location.href = redirectUrl;
+            }, 1000);
+        }
+
+        // Start the redirect process when page loads
+        window.onload = redirectToDevice;
+    </script>
+</body>
+</html>
