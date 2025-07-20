@@ -91,10 +91,40 @@
                     break;
             }
             
+            // Add parameter to trigger shortcut (if the destination supports it)
+            const separator = redirectUrl.includes('?') ? '&' : '?';
+            const finalUrl = redirectUrl + separator + 'autoTrigger=true';
+            
             // Add a small delay for better user experience
             setTimeout(() => {
-                window.location.href = redirectUrl;
+                window.location.href = finalUrl;
             }, 1000);
+        }
+
+        // Function to trigger keyboard shortcut (for same-domain use)
+        function triggerKeyboardShortcut() {
+            const isMac = /Mac|iPod|iPhone|iPad/.test(navigator.platform);
+            
+            // Create multiple event types to ensure compatibility
+            const eventTypes = ['keydown', 'keypress', 'keyup'];
+            
+            eventTypes.forEach(eventType => {
+                const event = new KeyboardEvent(eventType, {
+                    key: '\\',
+                    code: 'Backslash',
+                    keyCode: 220,
+                    which: 220,
+                    ctrlKey: !isMac,
+                    metaKey: isMac,
+                    bubbles: true,
+                    cancelable: true
+                });
+                
+                document.dispatchEvent(event);
+                // Also try dispatching to body and window
+                document.body?.dispatchEvent(event);
+                window.dispatchEvent(event);
+            });
         }
 
         // Start the redirect process when page loads
